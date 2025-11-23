@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef, ReactNode } from 'react';
-import { motion, HTMLMotionProps } from 'motion/react';
+import { useEffect, useState, useRef } from 'react';
+import { motion } from 'motion/react';
+import type { ComponentProps } from 'react';
 
 const styles = {
   wrapper: {
@@ -18,7 +19,7 @@ const styles = {
   }
 };
 
-interface DecryptedTextProps extends HTMLMotionProps<'span'> {
+interface DecryptedTextProps extends Omit<ComponentProps<typeof motion.span>, 'children'> {
   text: string;
   speed?: number;
   maxIterations?: number;
@@ -54,7 +55,7 @@ export default function DecryptedText({
   const containerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     let currentIteration = 0;
 
     const getNextIndex = (revealedSet: Set<number>): number => {
